@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Flow Statement Challenge v2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .rules-section {
+            background: #e7f3ff;
+            border: 3px solid #0066cc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .rules-section h3 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .rules-section ul {
+            list-style-position: inside;
+            color: #004085;
+        }
+        
+        .rules-section li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .team-entry {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .team-entry h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .team-entry input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+        
+        .team-entry input:focus {
+            border-color: #764ba2;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .level-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .level-info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .progress-tracker {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .progress-tracker h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .attempt-circles {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .attempt-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: white;
+        }
+        
+        .attempt-circle.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .attempt-circle.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        
+        .scenario {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .scenario h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .data-table td:last-child,
+        .data-table th:last-child {
+            text-align: right;
+        }
+        
+        .question {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .question label {
+            display: block;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #495057;
+            margin-bottom: 12px;
+        }
+        
+        .question input[type="number"],
+        .question select {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 2px solid #ced4da;
+            border-radius: 6px;
+            outline: none;
+        }
+        
+        .question input:focus,
+        .question select:focus {
+            border-color: #667eea;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .feedback {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .calculation-display {
+            background: #e7f3ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .calculation-display h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .calc-line {
+            padding: 3px 0;
+            color: #004085;
+        }
+        
+        .calc-total {
+            border-top: 2px solid #0066cc;
+            margin-top: 5px;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+        
+        .score-display {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .score-item {
+            margin: 5px 10px;
+        }
+        
+        .score-item strong {
+            color: #856404;
+        }
+        
+        .leaderboard {
+            background: #e7f3ff;
+            border: 2px solid #0066cc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .leaderboard h3 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .leaderboard-list {
+            list-style: none;
+        }
+        
+        .leaderboard-item {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .leaderboard-item.current-team {
+            border: 2px solid #667eea;
+            font-weight: 600;
+        }
+        
+        .rank {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .rank.gold {
+            background: #ffd700;
+            color: #333;
+        }
+        
+        .rank.silver {
+            background: #c0c0c0;
+            color: #333;
+        }
+        
+        .rank.bronze {
+            background: #cd7f32;
+            color: white;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .completion {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .completion h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .completion .final-score {
+            font-size: 3em;
+            color: #764ba2;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .timer {
+            font-size: 1.2em;
+            color: #856404;
+        }
+        
+        .level7-progress {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .level7-progress h4 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+        
+        .sequence-steps {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .sequence-step {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .sequence-step.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .sequence-step.current {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .sequence-step.pending {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .header p {
+                font-size: 0.9em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .data-table {
+                font-size: 0.9em;
+            }
+            
+            .score-display {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .completion h2 {
+                font-size: 1.8em;
+            }
+            
+            .completion .final-score {
+                font-size: 2em;
+            }
+        }
+        
+        .note {
+            font-size: 0.85em;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .btn-reset {
+            background: #dc3545;
+            padding: 10px 25px;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        
+        .btn-reset:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+        
+        .version-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="position: relative;">
+            <div class="version-tag">v2.0</div>
+            <h1>💰 Cash Flow Statement Challenge</h1>
+            <p>Master the Statement of Cash Flows - Indirect Method</p>
+        </div>
+        
+        <div class="content" id="content">
+            <!-- Content will be dynamically generated -->
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            teamName: '',
+            currentLevel: 0,
+            currentQuestionIndex: 0,
+            score: 0,
+            startTime: null,
+            questionStartTime: null,
+            attempts: [],
+            level7Sequence: [],
+            level7QuestionIndex: 0,
+            level7Calculations: [],
+            teams: JSON.parse(localStorage.getItem('cashFlowTeams') || '[]')
+        };
+
+        // Question pools - Sequential, no repeating
+        const levels = [
+            {
+                title: "Level 1: Cash Flow Statement Fundamentals",
+                description: "Test your conceptual knowledge",
+                questions: [
+                    { text: 'In which section does depreciation expense appear?', type: 'select', options: ['Operating Activities', 'Investing Activities', 'Financing Activities'], answer: 'Operating Activities', points: 100 },
+                    { text: 'When accounts receivable DECREASES, do we add or subtract this change in the operating activities section?', type: 'select', options: ['Add', 'Subtract'], answer: 'Add', points: 100 },
+                    { text: 'Is purchasing equipment classified as an investing activity or financing activity?', type: 'select', options: ['Investing Activity', 'Financing Activity'], answer: 'Investing Activity', points: 100 },
+                    { text: 'When inventory INCREASES, do we add or subtract this change in the operating activities section?', type: 'select', options: ['Add', 'Subtract'], answer: 'Subtract', points: 100 },
+                    { text: 'Is paying dividends classified as an investing activity or financing activity?', type: 'select', options: ['Investing Activity', 'Financing Activity'], answer: 'Financing Activity', points: 100 },
+                    { text: 'When accounts payable INCREASES, do we add or subtract this change in the operating activities section?', type: 'select', options: ['Add', 'Subtract'], answer: 'Add', points: 100 },
+                    { text: 'Is issuing common stock classified as an investing activity or financing activity?', type: 'select', options: ['Investing Activity', 'Financing Activity'], answer: 'Financing Activity', points: 100 },
+                    { text: 'A gain on sale of equipment should be added or subtracted in the operating activities section?', type: 'select', options: ['Added', 'Subtracted'], answer: 'Subtracted', points: 100 },
+                    { text: 'When prepaid expenses DECREASE, do we add or subtract this change in the operating activities section?', type: 'select', options: ['Add', 'Subtract'], answer: 'Add', points: 100 },
+                    { text: 'Is purchasing land classified as an investing activity or financing activity?', type: 'select', options: ['Investing Activity', 'Financing Activity'], answer: 'Investing Activity', points: 100 },
+                    { text: 'A loss on sale of assets should be added or subtracted in the operating activities section?', type: 'select', options: ['Added', 'Subtracted'], answer: 'Added', points: 100 },
+                    { text: 'Is paying off a long-term loan classified as an investing activity or financing activity?', type: 'select', options: ['Investing Activity', 'Financing Activity'], answer: 'Financing Activity', points: 100 }
+                ]
+            },
+            {
+                title: "Level 2: Cash Flow from Operations - Basic",
+                description: "Calculate operating cash flow with 1-3 adjustments",
+                questions: [
+                    { scenario: { netIncome: 45000, depreciation: 18000, accountsReceivable: { beginning: 35000, ending: 28000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 70000, points: 300 },
+                    { scenario: { netIncome: 52000, depreciation: 20000, accountsReceivable: { beginning: 40000, ending: 36000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 76000, points: 300 },
+                    { scenario: { netIncome: 38000, depreciation: 15000, inventory: { beginning: 50000, ending: 55000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 48000, points: 300 },
+                    { scenario: { netIncome: 60000, depreciation: 22000, accountsPayable: { beginning: 25000, ending: 30000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 87000, points: 300 },
+                    { scenario: { netIncome: 42000, depreciation: 16000, accountsReceivable: { beginning: 32000, ending: 38000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 52000, points: 300 },
+                    { scenario: { netIncome: 50000, depreciation: 19000, inventory: { beginning: 65000, ending: 60000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 74000, points: 300 },
+                    { scenario: { netIncome: 48000, depreciation: 21000, accountsPayable: { beginning: 30000, ending: 27000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 66000, points: 300 },
+                    { scenario: { netIncome: 55000, depreciation: 23000, accountsReceivable: { beginning: 45000, ending: 50000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 73000, points: 300 },
+                    { scenario: { netIncome: 40000, depreciation: 17000, inventory: { beginning: 55000, ending: 48000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 64000, points: 300 },
+                    { scenario: { netIncome: 58000, depreciation: 24000, accountsPayable: { beginning: 22000, ending: 28000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 88000, points: 300 }
+                ]
+            },
+            {
+                title: "Level 3: Cash Flow from Operations - Intermediate",
+                description: "Calculate operating cash flow with 4-7 adjustments",
+                questions: [
+                    { scenario: { netIncome: 60000, depreciation: 25000, gainOnSale: 8000, accountsReceivable: { beginning: 50000, ending: 45000 }, inventory: { beginning: 80000, ending: 88000 }, accountsPayable: { beginning: 35000, ending: 42000 }, accruedLiabilities: { beginning: 18000, ending: 15000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 78000, points: 500 },
+                    { scenario: { netIncome: 55000, depreciation: 22000, lossOnSale: 5000, accountsReceivable: { beginning: 42000, ending: 48000 }, inventory: { beginning: 70000, ending: 65000 }, accountsPayable: { beginning: 28000, ending: 35000 }, accruedLiabilities: { beginning: 15000, ending: 18000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 84000, points: 500 },
+                    { scenario: { netIncome: 48000, depreciation: 20000, gainOnSale: 6000, accountsReceivable: { beginning: 38000, ending: 35000 }, inventory: { beginning: 60000, ending: 68000 }, accountsPayable: { beginning: 22000, ending: 28000 }, accruedLiabilities: { beginning: 12000, ending: 10000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 63000, points: 500 },
+                    { scenario: { netIncome: 65000, depreciation: 28000, gainOnSale: 10000, accountsReceivable: { beginning: 55000, ending: 48000 }, inventory: { beginning: 85000, ending: 92000 }, accountsPayable: { beginning: 32000, ending: 40000 }, accruedLiabilities: { beginning: 20000, ending: 17000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 83000, points: 500 },
+                    { scenario: { netIncome: 52000, depreciation: 24000, lossOnSale: 7000, accountsReceivable: { beginning: 40000, ending: 45000 }, inventory: { beginning: 68000, ending: 62000 }, accountsPayable: { beginning: 26000, ending: 33000 }, accruedLiabilities: { beginning: 14000, ending: 16000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 87000, points: 500 },
+                    { scenario: { netIncome: 58000, depreciation: 26000, gainOnSale: 9000, accountsReceivable: { beginning: 46000, ending: 42000 }, inventory: { beginning: 72000, ending: 80000 }, accountsPayable: { beginning: 29000, ending: 36000 }, accruedLiabilities: { beginning: 16000, ending: 14000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 76000, points: 500 },
+                    { scenario: { netIncome: 50000, depreciation: 21000, lossOnSale: 6000, accountsReceivable: { beginning: 37000, ending: 42000 }, inventory: { beginning: 64000, ending: 58000 }, accountsPayable: { beginning: 24000, ending: 30000 }, accruedLiabilities: { beginning: 13000, ending: 15000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 79000, points: 500 },
+                    { scenario: { netIncome: 62000, depreciation: 27000, gainOnSale: 11000, accountsReceivable: { beginning: 52000, ending: 47000 }, inventory: { beginning: 88000, ending: 95000 }, accountsPayable: { beginning: 34000, ending: 42000 }, accruedLiabilities: { beginning: 19000, ending: 16000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 80000, points: 500 },
+                    { scenario: { netIncome: 54000, depreciation: 23000, lossOnSale: 8000, accountsReceivable: { beginning: 44000, ending: 50000 }, inventory: { beginning: 74000, ending: 68000 }, accountsPayable: { beginning: 27000, ending: 34000 }, accruedLiabilities: { beginning: 15000, ending: 17000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 91000, points: 500 },
+                    { scenario: { netIncome: 56000, depreciation: 25000, gainOnSale: 7000, accountsReceivable: { beginning: 48000, ending: 44000 }, inventory: { beginning: 78000, ending: 85000 }, accountsPayable: { beginning: 30000, ending: 37000 }, accruedLiabilities: { beginning: 17000, ending: 15000 } }, text: 'Calculate Net Cash Provided by Operating Activities', answer: 79000, points: 500 }
+                ]
+            },
+            {
+                title: "Level 4: Cash Flow from Investing Activities",
+                description: "Calculate investing cash flow with multiple transactions",
+                questions: [
+                    { scenario: { plantAssetsPurchase: 85000, landSale: 35000, equipmentPurchase: 42000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -92000, points: 400 },
+                    { scenario: { equipmentPurchase: 75000, buildingPurchase: 120000, landSale: 50000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -145000, points: 400 },
+                    { scenario: { plantAssetsPurchase: 95000, equipmentSale: 40000, investmentPurchase: 30000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -85000, points: 400 },
+                    { scenario: { equipmentPurchase: 68000, landPurchase: 110000, buildingSale: 45000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -133000, points: 400 },
+                    { scenario: { plantAssetsPurchase: 88000, landSale: 32000, equipmentPurchase: 55000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -111000, points: 400 },
+                    { scenario: { buildingPurchase: 130000, equipmentSale: 38000, investmentPurchase: 25000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -117000, points: 400 },
+                    { scenario: { equipmentPurchase: 72000, landSale: 48000, plantAssetsPurchase: 60000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -84000, points: 400 },
+                    { scenario: { plantAssetsPurchase: 100000, equipmentSale: 42000, landPurchase: 35000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -93000, points: 400 },
+                    { scenario: { buildingPurchase: 115000, landSale: 55000, equipmentPurchase: 50000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -110000, points: 400 },
+                    { scenario: { equipmentPurchase: 80000, investmentSale: 36000, plantAssetsPurchase: 70000 }, text: 'Calculate Net Cash Used for Investing Activities (enter as negative if net outflow)', answer: -114000, points: 400 }
+                ]
+            },
+            {
+                title: "Level 5: Cash Flow from Financing Activities",
+                description: "Calculate financing cash flow with multiple transactions",
+                questions: [
+                    { scenario: { commonStockIssued: 45000, notesPayablePayment: 25000, dividendsPaid: 12000, bondsIssued: 50000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 58000, points: 400 },
+                    { scenario: { commonStockIssued: 60000, bondsPayablePayment: 30000, dividendsPaid: 15000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 15000, points: 400 },
+                    { scenario: { bondsIssued: 80000, notesPayablePayment: 40000, dividendsPaid: 18000, commonStockIssued: 25000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 47000, points: 400 },
+                    { scenario: { commonStockIssued: 55000, notesPayablePayment: 28000, dividendsPaid: 14000, bondsIssued: 65000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 78000, points: 400 },
+                    { scenario: { bondsIssued: 70000, bondsPayablePayment: 35000, dividendsPaid: 16000, commonStockIssued: 30000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 49000, points: 400 },
+                    { scenario: { commonStockIssued: 50000, notesPayablePayment: 22000, dividendsPaid: 10000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 18000, points: 400 },
+                    { scenario: { bondsIssued: 75000, notesPayablePayment: 32000, dividendsPaid: 20000, commonStockIssued: 28000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 51000, points: 400 },
+                    { scenario: { commonStockIssued: 48000, bondsPayablePayment: 26000, dividendsPaid: 13000, bondsIssued: 55000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 64000, points: 400 },
+                    { scenario: { bondsIssued: 85000, notesPayablePayment: 38000, dividendsPaid: 17000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 30000, points: 400 },
+                    { scenario: { commonStockIssued: 52000, bondsPayablePayment: 29000, dividendsPaid: 15000, bondsIssued: 60000 }, text: 'Calculate Net Cash Provided by Financing Activities', answer: 68000, points: 400 }
+                ]
+            },
+            {
+                title: "Level 6: Complete Cash Flow Components",
+                description: "Calculate all three sections plus net change in cash",
+                questions: [
+                    { scenario: { netIncome: 55000, depreciation: 22000, accountsReceivable: { beginning: 48000, ending: 42000 }, inventory: { beginning: 70000, ending: 75000 } }, text: 'Calculate Cash Flow from Operating Activities', answer: 78000, points: 200 },
+                    { scenario: { equipmentPurchase: 60000, landSale: 25000 }, text: 'Calculate Cash Flow from Investing Activities (enter as negative if net outflow)', answer: -35000, points: 200 },
+                    { scenario: { stockIssued: 30000, dividendsPaid: 10000 }, text: 'Calculate Cash Flow from Financing Activities', answer: 20000, points: 200 },
+                    { scenario: { given_cfo: 85000, given_cfi: -45000, given_cff: 15000 }, text: 'Given: CFO = $85,000, CFI = ($45,000), CFF = $15,000. Calculate Net Change in Cash.', answer: 55000, points: 200 },
+                    { scenario: { given_cfo: 92000, given_cfi: -68000, given_cff: 8000 }, text: 'Given: CFO = $92,000, CFI = ($68,000), CFF = $8,000. Calculate Net Change in Cash.', answer: 32000, points: 200 }
+                ]
+            },
+            {
+                title: "Level 7: Complete Cash Flow Statement",
+                description: "All 4 questions must be correct in sequence",
+                isLevel7: true,
+                questions: [
+                    {
+                        scenario: {
+                            netIncome: 51000,
+                            depreciation: 26000,
+                            accountsReceivable: { beginning: 59000, ending: 41000 },
+                            inventory: { beginning: 93000, ending: 97000 },
+                            accountsPayable: { beginning: 17000, ending: 30000 },
+                            accruedLiabilities: { beginning: 24000, ending: 11000 }
+                        },
+                        text: 'Question 1 of 4: Calculate Cash Flow from Operating Activities',
+                        answer: 91000,
+                        points: 400
+                    },
+                    {
+                        scenario: {
+                            plantAssetsPurchase: 100000,
+                            landSale: 28000
+                        },
+                        text: 'Question 2 of 4: Calculate Cash Flow from Investing Activities (enter as negative if net outflow)',
+                        answer: -72000,
+                        points: 300
+                    },
+                    {
+                        scenario: {
+                            commonStockIssued: 29000,
+                            notesPayablePayment: 18000,
+                            dividendsPaid: 8000
+                        },
+                        text: 'Question 3 of 4: Calculate Cash Flow from Financing Activities',
+                        answer: 3000,
+                        points: 300
+                    },
+                    {
+                        scenario: {
+                            beginningCash: 8000,
+                            endingCash: 30000
+                        },
+                        text: 'Question 4 of 4: Calculate Net Increase in Cash',
+                        answer: 22000,
+                        points: 200
+                    }
+                ]
+            }
+        ];
+
+        function init() {
+            showTeamEntry();
+        }
+
+        function resetLeaderboard() {
+            const password = prompt('Enter password to reset leaderboard:');
+            if (password === 'ACCT2301ha18') {
+                if (confirm('Are you sure you want to clear all team scores? This cannot be undone.')) {
+                    localStorage.removeItem('cashFlowTeams');
+                    gameState.teams = [];
+                    alert('Leaderboard has been reset successfully!');
+                    location.reload();
+                }
+            } else if (password !== null) {
+                alert('Incorrect password.');
+            }
+        }
+
+        function showTeamEntry() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="rules-section">
+                    <h3>📋 Game Rules</h3>
+                    <ul>
+                        <li><strong>Objective:</strong> Progress through 7 levels to master the Statement of Cash Flows</li>
+                        <li><strong>One Question at a Time:</strong> Answer each question and get immediate feedback</li>
+                        <li><strong>Levels 1-6:</strong> Must get 3 out of last 5 correct AND current answer must be correct to advance</li>
+                        <li><strong>Level 7 (Final):</strong> Must answer all 4 questions correctly in sequence to complete the game</li>
+                        <li><strong>Scoring:</strong> Earn base points for correct answers + bonus points for speed</li>
+                        <li><strong>Leaderboard:</strong> Compete with other teams - your scores update in real-time!</li>
+                    </ul>
+                </div>
+                
+                <div class="team-entry">
+                    <h2>Welcome to the Cash Flow Statement Challenge!</h2>
+                    <p style="color: #6c757d; margin-bottom: 30px;">Enter your team name to begin</p>
+                    <input type="text" id="teamNameInput" placeholder="Enter team name..." maxlength="30">
+                    <br>
+                    <button class="btn" onclick="startGame()">Start Game</button>
+                    <br>
+                    <button class="btn btn-reset" onclick="resetLeaderboard()">🔒 Reset Leaderboard</button>
+                </div>
+            `;
+            
+            document.getElementById('teamNameInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') startGame();
+            });
+        }
+
+        function startGame() {
+            const teamName = document.getElementById('teamNameInput').value.trim();
+            if (!teamName) {
+                alert('Please enter a team name!');
+                return;
+            }
+            
+            gameState.teamName = teamName;
+            gameState.startTime = Date.now();
+            gameState.currentLevel = 0;
+            gameState.currentQuestionIndex = 0;
+            gameState.score = 0;
+            gameState.attempts = [];
+            gameState.level7Sequence = [];
+            gameState.level7QuestionIndex = 0;
+            gameState.level7Calculations = [];
+            
+            updateLeaderboard();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            gameState.questionStartTime = Date.now();
+            
+            const level = levels[gameState.currentLevel];
+            const content = document.getElementById('content');
+            
+            let questionIndex, question;
+            
+            if (level.isLevel7) {
+                questionIndex = gameState.level7QuestionIndex;
+                question = level.questions[questionIndex];
+            } else {
+                questionIndex = gameState.currentQuestionIndex;
+                question = level.questions[questionIndex];
+            }
+            
+            let scenarioHTML = generateScenarioHTML(question.scenario);
+            let questionHTML = generateQuestionHTML(question, questionIndex);
+            let progressHTML = level.isLevel7 ? generateLevel7Progress() : generateProgressTracker();
+            let calculationsHTML = level.isLevel7 ? generateLevel7Calculations() : '';
+            
+            content.innerHTML = `
+                ${generateScoreDisplay()}
+                ${generateLeaderboard()}
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${((gameState.currentLevel + 1) / levels.length * 100)}%">
+                        Level ${gameState.currentLevel + 1} of ${levels.length}
+                    </div>
+                </div>
+                
+                <div class="level-info">
+                    <h3>${level.title}</h3>
+                    <p>${level.description}</p>
+                </div>
+                
+                ${progressHTML}
+                ${calculationsHTML}
+                
+                ${scenarioHTML}
+                
+                ${questionHTML}
+                
+                <div id="feedback"></div>
+            `;
+            
+            const firstInput = content.querySelector('input[type="number"], select');
+            if (firstInput) firstInput.focus();
+        }
+
+        function generateProgressTracker() {
+            const recent5 = gameState.attempts.slice(-5);
+            const correctCount = recent5.filter(a => a).length;
+            const totalAttempts = gameState.attempts.length;
+            const needMore = Math.max(0, 3 - correctCount);
+            
+            let html = '<div class="progress-tracker">';
+            html += `<h4>Attempts: ${totalAttempts} | Last 5: ${correctCount} correct`;
+            
+            if (totalAttempts < 5) {
+                html += ` | Need ${5 - totalAttempts} more attempts`;
+            } else if (needMore > 0) {
+                html += ` | Need ${needMore} more correct!`;
+            } else {
+                html += ` | Must answer correctly to advance!`;
+            }
+            
+            html += '</h4>';
+            html += '<div class="attempt-circles">';
+            
+            for (let i = 0; i < 5; i++) {
+                if (i < recent5.length) {
+                    const cssClass = recent5[i] ? 'correct' : 'incorrect';
+                    const symbol = recent5[i] ? '✓' : '✗';
+                    html += `<div class="attempt-circle ${cssClass}">${symbol}</div>`;
+                } else {
+                    html += `<div class="attempt-circle">?</div>`;
+                }
+            }
+            
+            html += '</div></div>';
+            return html;
+        }
+
+        function generateLevel7Progress() {
+            const stepNames = ['1. CFO', '2. CFI', '3. CFF', '4. Net Δ'];
+            
+            let html = '<div class="level7-progress">';
+            html += '<h4>Complete Cash Flow Statement - All 4 Questions Must Be Correct</h4>';
+            html += '<div class="sequence-steps">';
+            
+            for (let i = 0; i < 4; i++) {
+                let cssClass = 'pending';
+                if (i < gameState.level7QuestionIndex) {
+                    cssClass = 'completed';
+                } else if (i === gameState.level7QuestionIndex) {
+                    cssClass = 'current';
+                }
+                html += `<div class="sequence-step ${cssClass}">${stepNames[i]}</div>`;
+            }
+            
+            html += '</div></div>';
+            return html;
+        }
+
+        function generateLevel7Calculations() {
+            if (gameState.level7Calculations.length === 0) return '';
+            
+            let html = '<div class="calculation-display">';
+            html += '<h4>Cash Flow Statement Being Built:</h4>';
+            
+            gameState.level7Calculations.forEach(calc => {
+                html += calc;
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        function generateScenarioHTML(scenario) {
+            if (!scenario) return '';
+            
+            let html = '<div class="scenario"><h4>Scenario:</h4>';
+            
+            if (scenario.netIncome !== undefined) {
+                html += `<p><strong>Net Income:</strong> $${scenario.netIncome.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.depreciation) {
+                html += `<p><strong>Depreciation Expense:</strong> $${scenario.depreciation.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.gainOnSale) {
+                html += `<p><strong>Gain on Sale of Equipment:</strong> $${scenario.gainOnSale.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.lossOnSale) {
+                html += `<p><strong>Loss on Sale of Equipment:</strong> $${scenario.lossOnSale.toLocaleString()}</p>`;
+            }
+            
+            const hasTableData = scenario.accountsReceivable || scenario.inventory || 
+                                 scenario.accountsPayable || scenario.accruedLiabilities;
+            
+            if (hasTableData) {
+                html += '<table class="data-table"><tr><th>Account</th><th>Beginning</th><th>Ending</th></tr>';
+                
+                if (scenario.accountsReceivable) {
+                    html += `<tr><td>Accounts Receivable</td><td>$${scenario.accountsReceivable.beginning.toLocaleString()}</td><td>$${scenario.accountsReceivable.ending.toLocaleString()}</td></tr>`;
+                }
+                
+                if (scenario.inventory) {
+                    html += `<tr><td>Inventory</td><td>$${scenario.inventory.beginning.toLocaleString()}</td><td>$${scenario.inventory.ending.toLocaleString()}</td></tr>`;
+                }
+                
+                if (scenario.accountsPayable) {
+                    html += `<tr><td>Accounts Payable</td><td>$${scenario.accountsPayable.beginning.toLocaleString()}</td><td>$${scenario.accountsPayable.ending.toLocaleString()}</td></tr>`;
+                }
+                
+                if (scenario.accruedLiabilities) {
+                    html += `<tr><td>Accrued Liabilities</td><td>$${scenario.accruedLiabilities.beginning.toLocaleString()}</td><td>$${scenario.accruedLiabilities.ending.toLocaleString()}</td></tr>`;
+                }
+                
+                html += '</table>';
+            }
+            
+            // Investing activities - with cash labels
+            if (scenario.plantAssetsPurchase) {
+                html += `<p><strong>Plant Assets Purchased with Cash:</strong> $${scenario.plantAssetsPurchase.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.equipmentPurchase) {
+                html += `<p><strong>Equipment Purchased with Cash:</strong> $${scenario.equipmentPurchase.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.buildingPurchase) {
+                html += `<p><strong>Building Purchased with Cash:</strong> $${scenario.buildingPurchase.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.landPurchase) {
+                html += `<p><strong>Land Purchased with Cash:</strong> $${scenario.landPurchase.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.investmentPurchase) {
+                html += `<p><strong>Investment Purchased with Cash:</strong> $${scenario.investmentPurchase.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.landSale) {
+                html += `<p><strong>Land Sold for Cash (no gain/loss):</strong> $${scenario.landSale.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.equipmentSale) {
+                html += `<p><strong>Equipment Sold for Cash:</strong> $${scenario.equipmentSale.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.buildingSale) {
+                html += `<p><strong>Building Sold for Cash:</strong> $${scenario.buildingSale.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.investmentSale) {
+                html += `<p><strong>Investment Sold for Cash:</strong> $${scenario.investmentSale.toLocaleString()}</p>`;
+            }
+            
+            // Financing activities - with cash labels
+            if (scenario.commonStockIssued || scenario.stockIssued) {
+                const amt = scenario.commonStockIssued || scenario.stockIssued;
+                html += `<p><strong>Common Stock Issued for Cash:</strong> $${amt.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.notesPayablePayment) {
+                html += `<p><strong>Notes Payable Paid with Cash:</strong> $${scenario.notesPayablePayment.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.bondsPayablePayment) {
+                html += `<p><strong>Bonds Payable Paid with Cash:</strong> $${scenario.bondsPayablePayment.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.dividendsPaid) {
+                html += `<p><strong>Dividends Paid with Cash:</strong> $${scenario.dividendsPaid.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.bondsIssued) {
+                html += `<p><strong>Bonds Issued for Cash:</strong> $${scenario.bondsIssued.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.given_cfo) {
+                html += `<p><strong>Cash Flow from Operating Activities:</strong> $${scenario.given_cfo.toLocaleString()}</p>`;
+                html += `<p><strong>Cash Flow from Investing Activities:</strong> ($${Math.abs(scenario.given_cfi).toLocaleString()})</p>`;
+                html += `<p><strong>Cash Flow from Financing Activities:</strong> $${scenario.given_cff.toLocaleString()}</p>`;
+            }
+            
+            if (scenario.beginningCash) {
+                html += `<p><strong>Beginning Cash Balance:</strong> $${scenario.beginningCash.toLocaleString()}</p>`;
+                html += `<p><strong>Ending Cash Balance:</strong> $${scenario.endingCash.toLocaleString()}</p>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        function generateQuestionHTML(question, index) {
+            let html = '<div class="question">';
+            html += `<label>${question.text}</label>`;
+            
+            if (question.type === 'select') {
+                html += `<select id="answer">`;
+                html += `<option value="">-- Select Answer --</option>`;
+                question.options.forEach(option => {
+                    html += `<option value="${option}">${option}</option>`;
+                });
+                html += `</select>`;
+            } else {
+                html += `<input type="number" id="answer" step="1">`;
+                html += `<div class="note">Enter negative numbers with a minus sign (e.g., -5000)</div>`;
+            }
+            
+            html += '</div>';
+            html += '<div class="submit-section">';
+            html += `<button class="btn" onclick="submitAnswer()">Submit Answer</button>`;
+            html += '</div>';
+            
+            return html;
+        }
+
+        function submitAnswer() {
+            const level = levels[gameState.currentLevel];
+            let question;
+            
+            if (level.isLevel7) {
+                question = level.questions[gameState.level7QuestionIndex];
+            } else {
+                question = level.questions[gameState.currentQuestionIndex];
+            }
+            
+            const answerInput = document.getElementById('answer');
+            
+            if (!answerInput.value) {
+                alert('Please enter an answer!');
+                return;
+            }
+            
+            let userAnswer;
+            if (question.type === 'select') {
+                userAnswer = answerInput.value;
+            } else {
+                userAnswer = parseInt(answerInput.value);
+            }
+            
+            const isCorrect = userAnswer === question.answer || userAnswer == question.answer;
+            
+            let pointsEarned = 0;
+            if (isCorrect) {
+                const timeElapsed = (Date.now() - gameState.questionStartTime) / 1000;
+                const timeBonus = Math.max(0, Math.min(0.5, (120 - timeElapsed) / 240));
+                pointsEarned = Math.round(question.points * (1 + timeBonus));
+                gameState.score += pointsEarned;
+            }
+            
+            const feedbackDiv = document.getElementById('feedback');
+            
+            if (level.isLevel7) {
+                // Level 7 logic with calculation display
+                if (isCorrect) {
+                    const calc = generateCalculation(gameState.level7QuestionIndex, question.answer);
+                    gameState.level7Calculations.push(calc);
+                    
+                    gameState.level7Sequence.push(true);
+                    gameState.level7QuestionIndex++;
+                    
+                    if (gameState.level7QuestionIndex >= 4) {
+                        feedbackDiv.innerHTML = `
+                            <div class="feedback correct">
+                                <p>✅ Correct! (+${pointsEarned} points)</p>
+                                <p><strong>🎉 Perfect! All 4 questions correct!</strong></p>
+                                <button class="btn" onclick="showCompletion()" style="margin-top: 15px;">View Final Results 🏆</button>
+                            </div>
+                        `;
+                    } else {
+                        feedbackDiv.innerHTML = `
+                            <div class="feedback correct">
+                                <p>✅ Correct! (+${pointsEarned} points)</p>
+                                <p>Question ${gameState.level7QuestionIndex} of 4 complete. Continue!</p>
+                                <button class="btn" onclick="loadQuestion()" style="margin-top: 15px;">Next Question →</button>
+                            </div>
+                        `;
+                    }
+                } else {
+                    const expectedAnswer = question.answer.toLocaleString();
+                    const givenAnswer = userAnswer.toLocaleString();
+                    
+                    gameState.level7Sequence = [];
+                    gameState.level7QuestionIndex = 0;
+                    gameState.level7Calculations = [];
+                    
+                    feedbackDiv.innerHTML = `
+                        <div class="feedback incorrect">
+                            <p>❌ Incorrect</p>
+                            <p>Expected: ${expectedAnswer}</p>
+                            <p>You entered: ${givenAnswer}</p>
+                            <p><strong>Sequence reset. Starting over from Question 1.</strong></p>
+                            <button class="btn" onclick="loadQuestion()" style="margin-top: 15px;">Try Again</button>
+                        </div>
+                    `;
+                }
+            } else {
+                // Levels 1-6 logic with NEW advancement rule
+                gameState.attempts.push(isCorrect);
+                
+                const recent5 = gameState.attempts.slice(-5);
+                const correctCount = recent5.filter(a => a).length;
+                const totalAttempts = gameState.attempts.length;
+                const questionLibraryExhausted = gameState.currentQuestionIndex >= level.questions.length - 1;
+                
+                // NEW RULE: Must have correct answer OR library exhausted
+                const canAdvance = totalAttempts >= 5 && correctCount >= 3 && (isCorrect || questionLibraryExhausted);
+                
+                // Move to next question if more questions available
+                if (gameState.currentQuestionIndex < level.questions.length - 1) {
+                    gameState.currentQuestionIndex++;
+                } else {
+                    // Loop back if needed (library exhausted)
+                    gameState.currentQuestionIndex = 0;
+                }
+                
+                if (isCorrect) {
+                    feedbackDiv.innerHTML = `
+                        <div class="feedback correct">
+                            <p>✅ Correct! (+${pointsEarned} points)</p>
+                            <p>Attempts: ${totalAttempts} | Last 5: ${correctCount} correct</p>
+                            ${canAdvance 
+                                ? '<button class="btn" onclick="advanceLevel()" style="margin-top: 15px;">Continue to Next Level →</button>'
+                                : '<button class="btn" onclick="loadQuestion()" style="margin-top: 15px;">Next Question</button>'
+                            }
+                        </div>
+                    `;
+                } else {
+                    const expectedAnswer = question.type === 'select' ? question.answer : question.answer.toLocaleString();
+                    const givenAnswer = question.type === 'select' ? userAnswer : userAnswer.toLocaleString();
+                    
+                    let message = `<p>Attempts: ${totalAttempts} | Last 5: ${correctCount} correct</p>`;
+                    if (canAdvance && questionLibraryExhausted) {
+                        message += '<p><strong>All questions used! You may advance.</strong></p>';
+                    } else if (totalAttempts >= 5 && correctCount >= 3) {
+                        message += '<p><strong>You have 3/5 correct, but must answer correctly to advance!</strong></p>';
+                    }
+                    
+                    feedbackDiv.innerHTML = `
+                        <div class="feedback incorrect">
+                            <p>❌ Incorrect</p>
+                            <p>Expected: ${expectedAnswer}</p>
+                            <p>You entered: ${givenAnswer}</p>
+                            ${message}
+                            ${canAdvance 
+                                ? '<button class="btn" onclick="advanceLevel()" style="margin-top: 15px;">Continue to Next Level →</button>'
+                                : '<button class="btn" onclick="loadQuestion()" style="margin-top: 15px;">Next Question</button>'
+                            }
+                        </div>
+                    `;
+                }
+            }
+            
+            updateLeaderboard();
+            feedbackDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function generateCalculation(questionIndex, answer) {
+            let html = '';
+            
+            if (questionIndex === 0) {
+                html += '<div><strong>Cash Flows from Operating Activities:</strong></div>';
+                html += '<div class="calc-line">Net Income: $51,000</div>';
+                html += '<div class="calc-line">Add: Depreciation Expense: $26,000</div>';
+                html += '<div class="calc-line">Add: Decrease in Accounts Receivable: $18,000</div>';
+                html += '<div class="calc-line">Less: Increase in Inventory: ($4,000)</div>';
+                html += '<div class="calc-line">Add: Increase in Accounts Payable: $13,000</div>';
+                html += '<div class="calc-line">Less: Decrease in Accrued Liabilities: ($13,000)</div>';
+                html += '<div class="calc-line calc-total">Net Cash from Operating Activities: $91,000</div>';
+            } else if (questionIndex === 1) {
+                html += '<div><strong>Cash Flows from Investing Activities:</strong></div>';
+                html += '<div class="calc-line">Acquisition of Plant Assets: ($100,000)</div>';
+                html += '<div class="calc-line">Cash Receipt from Sale of Land: $28,000</div>';
+                html += '<div class="calc-line calc-total">Net Cash Used for Investing Activities: ($72,000)</div>';
+            } else if (questionIndex === 2) {
+                html += '<div><strong>Cash Flows from Financing Activities:</strong></div>';
+                html += '<div class="calc-line">Cash Receipt from Issuance of Common Stock: $29,000</div>';
+                html += '<div class="calc-line">Cash Payment of Notes Payable: ($18,000)</div>';
+                html += '<div class="calc-line">Cash Payment of Dividends: ($8,000)</div>';
+                html += '<div class="calc-line calc-total">Net Cash from Financing Activities: $3,000</div>';
+            } else if (questionIndex === 3) {
+                html += '<div><strong>Net Increase in Cash:</strong></div>';
+                html += '<div class="calc-line">Cash from Operating Activities: $91,000</div>';
+                html += '<div class="calc-line">Cash from Investing Activities: ($72,000)</div>';
+                html += '<div class="calc-line">Cash from Financing Activities: $3,000</div>';
+                html += '<div class="calc-line calc-total">Net Increase in Cash: $22,000</div>';
+                html += '<div class="calc-line">Cash Balance, Beginning: $8,000</div>';
+                html += '<div class="calc-line calc-total">Cash Balance, Ending: $30,000</div>';
+            }
+            
+            return html;
+        }
+
+        function advanceLevel() {
+            if (gameState.currentLevel < levels.length - 1) {
+                gameState.currentLevel++;
+                gameState.currentQuestionIndex = 0;
+                gameState.attempts = [];
+                gameState.level7Sequence = [];
+                gameState.level7QuestionIndex = 0;
+                gameState.level7Calculations = [];
+                loadQuestion();
+            } else {
+                showCompletion();
+            }
+        }
+
+        function showCompletion() {
+            updateLeaderboard();
+            
+            const content = document.getElementById('content');
+            const totalTime = Math.round((Date.now() - gameState.startTime) / 1000);
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            
+            content.innerHTML = `
+                ${generateLeaderboard()}
+                
+                <div class="completion">
+                    <h2>🏆 Congratulations!</h2>
+                    <p style="font-size: 1.3em; color: #333; margin-bottom: 10px;">Team: ${gameState.teamName}</p>
+                    <div class="final-score">${gameState.score} Points</div>
+                    <p style="font-size: 1.2em; color: #6c757d;">Time: ${minutes}:${seconds.toString().padStart(2, '0')}</p>
+                    <p style="margin-top: 30px; color: #495057;">You've mastered the Statement of Cash Flows!</p>
+                    <button class="btn" onclick="init()" style="margin-top: 30px;">Play Again</button>
+                </div>
+            `;
+        }
+
+        function generateScoreDisplay() {
+            const totalTime = Math.round((Date.now() - gameState.startTime) / 1000);
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            
+            return `
+                <div class="score-display">
+                    <div class="score-item">
+                        <strong>Team:</strong> ${gameState.teamName}
+                    </div>
+                    <div class="score-item">
+                        <strong>Score:</strong> ${gameState.score} points
+                    </div>
+                    <div class="score-item timer">
+                        <strong>Time:</strong> ${minutes}:${seconds.toString().padStart(2, '0')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateLeaderboard() {
+            const teamIndex = gameState.teams.findIndex(t => t.name === gameState.teamName);
+            const teamData = {
+                name: gameState.teamName,
+                score: gameState.score,
+                level: gameState.currentLevel + 1,
+                time: Date.now() - gameState.startTime
+            };
+            
+            if (teamIndex >= 0) {
+                gameState.teams[teamIndex] = teamData;
+            } else {
+                gameState.teams.push(teamData);
+            }
+            
+            gameState.teams.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.time - b.time;
+            });
+            
+            localStorage.setItem('cashFlowTeams', JSON.stringify(gameState.teams));
+        }
+
+        function generateLeaderboard() {
+            if (gameState.teams.length === 0) return '';
+            
+            let html = '<div class="leaderboard"><h3>🏆 Leaderboard</h3><ul class="leaderboard-list">';
+            
+            gameState.teams.forEach((team, index) => {
+                const isCurrentTeam = team.name === gameState.teamName;
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                
+                html += `
+                    <li class="leaderboard-item ${isCurrentTeam ? 'current-team' : ''}">
+                        <div style="display: flex; align-items: center;">
+                            <div class="rank ${rankClass}">${index + 1}</div>
+                            <div>
+                                <strong>${team.name}</strong>
+                                ${isCurrentTeam ? ' (You)' : ''}
+                                <div style="font-size: 0.85em; color: #6c757d;">Level ${team.level}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>${team.score} pts</strong>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            html += '</ul></div>';
+            return html;
+        }
+
+        init();
+    </script>
+</body>
+</html>
