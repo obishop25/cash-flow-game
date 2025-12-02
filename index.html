@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash Flow Statement Challenge v4</title>
+    <title>Cash Flow Statement Challenge v6</title>
     <style>
         * {
             margin: 0;
@@ -532,7 +532,7 @@
 <body>
     <div class="container">
         <div class="header" style="position: relative;">
-            <div class="version-tag">v4.0</div>
+            <div class="version-tag">v6.0</div>
             <h1>💰 Cash Flow Statement Challenge</h1>
             <p>Master the Statement of Cash Flows - Indirect Method</p>
         </div>
@@ -552,6 +552,7 @@
             startTime: null,
             questionStartTime: null,
             attempts: [],
+            hasQualifiedForAdvancement: false,
             level7Sequence: [],
             level7QuestionIndex: 0,
             level7Calculations: [],
@@ -765,6 +766,7 @@
             gameState.currentQuestionIndex = 0;
             gameState.score = 0;
             gameState.attempts = [];
+            gameState.hasQualifiedForAdvancement = false;
             gameState.level7Sequence = [];
             gameState.level7QuestionIndex = 0;
             gameState.level7Calculations = [];
@@ -1040,20 +1042,20 @@
             let html = '<div style="margin-top: 15px; padding: 15px; background: #e7f3ff; border-left: 4px solid #0066cc; border-radius: 5px;">';
             html += '<strong>💡 Explanation:</strong><br><br>';
             
-            // Level 1 - Conceptual questions
+            // Level 1 - Conceptual questions (no scenario data)
             if (level.title.includes('Fundamentals')) {
                 const qText = question.text.toLowerCase();
                 
                 if (qText.includes('depreciation expense appear')) {
                     html += 'Depreciation appears in the <strong>Operating Activities</strong> section because:<br>';
-                    html += '• It\'s a non-cash expense that reduced Net Income<br>';
+                    html += '• It is a non-cash expense that reduced Net Income<br>';
                     html += '• We add it back because no cash was actually paid<br>';
                     html += '• Operating Activities reconciles Net Income to Cash from Operations<br>';
                 } else if (qText.includes('accounts receivable decreases')) {
                     html += 'A DECREASE in Accounts Receivable = <strong>ADD</strong> to Net Income because:<br>';
                     html += '• We collected cash from customers<br>';
                     html += '• Sales were already counted in Net Income (earlier)<br>';
-                    html += '• Now we\'re actually receiving the cash<br>';
+                    html += '• Now we are actually receiving the cash<br>';
                     html += '• Less A/R = More cash collected = Add<br>';
                 } else if (qText.includes('purchasing equipment')) {
                     html += 'Purchasing equipment is an <strong>Investing Activity</strong> because:<br>';
@@ -1072,7 +1074,7 @@
                     html += '• This is NOT an operating expense<br>';
                 } else if (qText.includes('accounts payable increases')) {
                     html += 'An INCREASE in Accounts Payable = <strong>ADD</strong> to Net Income because:<br>';
-                    html += '• We purchased items on credit (haven\'t paid cash yet)<br>';
+                    html += '• We purchased items on credit (have not paid cash yet)<br>';
                     html += '• Expenses were recorded but cash not yet paid<br>';
                     html += '• More A/P = Preserved cash = Add<br>';
                 } else if (qText.includes('issuing common stock')) {
@@ -1113,11 +1115,10 @@
                 return html;
             }
             
+            // For calculation-based questions, check if scenario exists
             if (!question.scenario) return '';
             
             const s = question.scenario;
-            
-            // Level-specific explanations
             if (level.title.includes('Operations')) {
                 html += '<div style="font-family: monospace; line-height: 1.8;">';
                 
@@ -1380,7 +1381,7 @@
                     `;
                 }
             } else {
-                // Levels 1-6 logic with NEW advancement rule
+                // Levels 1-6 logic with qualification tracking
                 gameState.attempts.push(isCorrect);
                 
                 const recent5 = gameState.attempts.slice(-5);
@@ -1388,8 +1389,20 @@
                 const totalAttempts = gameState.attempts.length;
                 const questionLibraryExhausted = gameState.currentQuestionIndex >= level.questions.length - 1;
                 
-                // NEW RULE: Must have correct answer OR library exhausted
-                const canAdvance = totalAttempts >= 5 && correctCount >= 3 && (isCorrect || questionLibraryExhausted);
+                // Check if student meets advancement criteria for the first time
+                const meetsAdvancementCriteria = totalAttempts >= 5 && correctCount >= 3 && (isCorrect || questionLibraryExhausted);
+                
+                // Update qualification status
+                if (isCorrect && meetsAdvancementCriteria) {
+                    // Student just qualified or stays qualified
+                    gameState.hasQualifiedForAdvancement = true;
+                } else if (!isCorrect) {
+                    // Wrong answer - lose qualification
+                    gameState.hasQualifiedForAdvancement = false;
+                }
+                
+                // Show both buttons if: correct answer AND (qualified OR just met criteria)
+                const showAdvancementOptions = isCorrect && (gameState.hasQualifiedForAdvancement || meetsAdvancementCriteria);
                 
                 // Move to next question if more questions available
                 if (gameState.currentQuestionIndex < level.questions.length - 1) {
@@ -1404,7 +1417,7 @@
                         <div class="feedback correct">
                             <p>✅ Correct! (+${pointsEarned} points)</p>
                             <p>Attempts: ${totalAttempts} | Last 5: ${correctCount} correct</p>
-                            ${canAdvance 
+                            ${showAdvancementOptions 
                                 ? `<div style="margin-top: 15px;">
                                     <button class="btn" onclick="advanceLevel()" style="margin-right: 10px;">Continue to Next Level →</button>
                                     <button class="btn" onclick="practiceMore()" style="background: #28a745;">Practice More at This Level</button>
@@ -1420,7 +1433,7 @@
                     const explanation = generateExplanation(question, level);
                     
                     let message = `<p>Attempts: ${totalAttempts} | Last 5: ${correctCount} correct</p>`;
-                    if (canAdvance && questionLibraryExhausted) {
+                    if (meetsAdvancementCriteria && questionLibraryExhausted) {
                         message += '<p><strong>All questions used! You may advance.</strong></p>';
                     } else if (totalAttempts >= 5 && correctCount >= 3) {
                         message += '<p><strong>You have 3/5 correct, but must answer correctly to advance!</strong></p>';
@@ -1433,7 +1446,7 @@
                             <p>You entered: ${givenAnswer}</p>
                             ${explanation}
                             ${message}
-                            ${canAdvance 
+                            ${meetsAdvancementCriteria 
                                 ? `<div style="margin-top: 15px;">
                                     <button class="btn" onclick="advanceLevel()" style="margin-right: 10px;">Continue to Next Level →</button>
                                     <button class="btn" onclick="practiceMore()" style="background: #28a745;">Practice More at This Level</button>
@@ -1486,12 +1499,14 @@
         }
 
         function practiceMore() {
-            // Reset attempts to continue practicing
-            gameState.attempts = [];
+            // Don't reset attempts - student stays qualified as long as they keep answering correctly
+            // hasQualifiedForAdvancement stays true
+            
+            // Move to next question
+            const level = levels[gameState.currentLevel];
             gameState.currentQuestionIndex++;
             
-            // If we've gone through all questions, loop back to start
-            const level = levels[gameState.currentLevel];
+            // If we have gone through all questions, loop back to start
             if (gameState.currentQuestionIndex >= level.questions.length) {
                 gameState.currentQuestionIndex = 0;
             }
@@ -1504,6 +1519,7 @@
                 gameState.currentLevel++;
                 gameState.currentQuestionIndex = 0;
                 gameState.attempts = [];
+                gameState.hasQualifiedForAdvancement = false;
                 gameState.level7Sequence = [];
                 gameState.level7QuestionIndex = 0;
                 gameState.level7Calculations = [];
