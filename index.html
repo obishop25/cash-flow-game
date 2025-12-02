@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash Flow Statement Challenge v3</title>
+    <title>Cash Flow Statement Challenge v4</title>
     <style>
         * {
             margin: 0;
@@ -532,7 +532,7 @@
 <body>
     <div class="container">
         <div class="header" style="position: relative;">
-            <div class="version-tag">v3.0</div>
+            <div class="version-tag">v4.0</div>
             <h1>💰 Cash Flow Statement Challenge</h1>
             <p>Master the Statement of Cash Flows - Indirect Method</p>
         </div>
@@ -1037,14 +1037,85 @@
         }
 
         function generateExplanation(question, level) {
-            if (!question.scenario) return '';
-            
-            const s = question.scenario;
             let html = '<div style="margin-top: 15px; padding: 15px; background: #e7f3ff; border-left: 4px solid #0066cc; border-radius: 5px;">';
             html += '<strong>💡 Explanation:</strong><br><br>';
             
-            // Level-specific explanations
-            if (level.title.includes('Operations')) {
+            // Level 1 - Conceptual questions
+            if (level.title.includes('Fundamentals')) {
+                const qText = question.text.toLowerCase();
+                
+                if (qText.includes('depreciation expense appear')) {
+                    html += 'Depreciation appears in the <strong>Operating Activities</strong> section because:<br>';
+                    html += '• It\'s a non-cash expense that reduced Net Income<br>';
+                    html += '• We add it back because no cash was actually paid<br>';
+                    html += '• Operating Activities reconciles Net Income to Cash from Operations<br>';
+                } else if (qText.includes('accounts receivable decreases')) {
+                    html += 'A DECREASE in Accounts Receivable = <strong>ADD</strong> to Net Income because:<br>';
+                    html += '• We collected cash from customers<br>';
+                    html += '• Sales were already counted in Net Income (earlier)<br>';
+                    html += '• Now we\'re actually receiving the cash<br>';
+                    html += '• Less A/R = More cash collected = Add<br>';
+                } else if (qText.includes('purchasing equipment')) {
+                    html += 'Purchasing equipment is an <strong>Investing Activity</strong> because:<br>';
+                    html += '• Equipment is a long-term asset<br>';
+                    html += '• Investing activities involve buying/selling long-term assets<br>';
+                    html += '• This is NOT an operating expense (not day-to-day business)<br>';
+                } else if (qText.includes('inventory increases')) {
+                    html += 'An INCREASE in Inventory = <strong>SUBTRACT</strong> from Net Income because:<br>';
+                    html += '• We purchased more inventory than we sold<br>';
+                    html += '• We spent cash to build up inventory<br>';
+                    html += '• More inventory = Less cash = Subtract<br>';
+                } else if (qText.includes('paying dividends')) {
+                    html += 'Paying dividends is a <strong>Financing Activity</strong> because:<br>';
+                    html += '• Dividends are payments to shareholders (owners)<br>';
+                    html += '• Financing activities involve transactions with owners and creditors<br>';
+                    html += '• This is NOT an operating expense<br>';
+                } else if (qText.includes('accounts payable increases')) {
+                    html += 'An INCREASE in Accounts Payable = <strong>ADD</strong> to Net Income because:<br>';
+                    html += '• We purchased items on credit (haven\'t paid cash yet)<br>';
+                    html += '• Expenses were recorded but cash not yet paid<br>';
+                    html += '• More A/P = Preserved cash = Add<br>';
+                } else if (qText.includes('issuing common stock')) {
+                    html += 'Issuing common stock is a <strong>Financing Activity</strong> because:<br>';
+                    html += '• Stock issuance involves raising money from owners<br>';
+                    html += '• Financing activities involve equity and debt transactions<br>';
+                    html += '• This brings cash INTO the business from investors<br>';
+                } else if (qText.includes('gain on sale')) {
+                    html += 'A gain on sale should be <strong>SUBTRACTED</strong> because:<br>';
+                    html += '• The gain was included in Net Income<br>';
+                    html += '• But the actual cash received appears in Investing Activities<br>';
+                    html += '• We subtract to avoid counting it twice<br>';
+                    html += '• Only the gain is subtracted, not the full sale proceeds<br>';
+                } else if (qText.includes('prepaid expenses decrease')) {
+                    html += 'A DECREASE in Prepaid Expenses = <strong>ADD</strong> to Net Income because:<br>';
+                    html += '• We used up prepaid items (already paid cash earlier)<br>';
+                    html += '• Expense was recorded this period but cash was paid before<br>';
+                    html += '• Less prepaid = Cash was paid in prior period = Add back<br>';
+                } else if (qText.includes('purchasing land')) {
+                    html += 'Purchasing land is an <strong>Investing Activity</strong> because:<br>';
+                    html += '• Land is a long-term asset<br>';
+                    html += '• Investing activities involve buying/selling long-term assets<br>';
+                    html += '• This is a capital expenditure, not an operating expense<br>';
+                } else if (qText.includes('loss on sale')) {
+                    html += 'A loss on sale should be <strong>ADDED</strong> because:<br>';
+                    html += '• The loss was subtracted from Net Income<br>';
+                    html += '• But the actual cash received appears in Investing Activities<br>';
+                    html += '• We add it back to avoid double-counting the loss<br>';
+                    html += '• Only the loss is added, not the full sale proceeds<br>';
+                } else if (qText.includes('paying off a long-term loan')) {
+                    html += 'Paying off a long-term loan is a <strong>Financing Activity</strong> because:<br>';
+                    html += '• Loans involve borrowing from creditors<br>';
+                    html += '• Financing activities involve debt and equity transactions<br>';
+                    html += '• Repaying principal (not interest) is a financing activity<br>';
+                }
+                
+                html += '</div>';
+                return html;
+            }
+            
+            if (!question.scenario) return '';
+            
+            const s = question.scenario;
                 html += '<div style="font-family: monospace; line-height: 1.8;">';
                 
                 if (s.netIncome !== undefined) {
@@ -1331,7 +1402,10 @@
                             <p>✅ Correct! (+${pointsEarned} points)</p>
                             <p>Attempts: ${totalAttempts} | Last 5: ${correctCount} correct</p>
                             ${canAdvance 
-                                ? '<button class="btn" onclick="advanceLevel()" style="margin-top: 15px;">Continue to Next Level →</button>'
+                                ? `<div style="margin-top: 15px;">
+                                    <button class="btn" onclick="advanceLevel()" style="margin-right: 10px;">Continue to Next Level →</button>
+                                    <button class="btn" onclick="practiceMore()" style="background: #28a745;">Practice More at This Level</button>
+                                   </div>`
                                 : '<button class="btn" onclick="loadQuestion()" style="margin-top: 15px;">Next Question</button>'
                             }
                         </div>
@@ -1357,7 +1431,10 @@
                             ${explanation}
                             ${message}
                             ${canAdvance 
-                                ? '<button class="btn" onclick="advanceLevel()" style="margin-top: 15px;">Continue to Next Level →</button>'
+                                ? `<div style="margin-top: 15px;">
+                                    <button class="btn" onclick="advanceLevel()" style="margin-right: 10px;">Continue to Next Level →</button>
+                                    <button class="btn" onclick="practiceMore()" style="background: #28a745;">Practice More at This Level</button>
+                                   </div>`
                                 : '<button class="btn" onclick="loadQuestion()" style="margin-top: 15px;">Next Question</button>'
                             }
                         </div>
@@ -1403,6 +1480,20 @@
             }
             
             return html;
+        }
+
+        function practiceMore() {
+            // Reset attempts to continue practicing
+            gameState.attempts = [];
+            gameState.currentQuestionIndex++;
+            
+            // If we've gone through all questions, loop back to start
+            const level = levels[gameState.currentLevel];
+            if (gameState.currentQuestionIndex >= level.questions.length) {
+                gameState.currentQuestionIndex = 0;
+            }
+            
+            loadQuestion();
         }
 
         function advanceLevel() {
